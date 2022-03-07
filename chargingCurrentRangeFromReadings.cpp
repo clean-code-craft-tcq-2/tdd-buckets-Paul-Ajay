@@ -1,6 +1,6 @@
 #include "chargingCurrentRangeFromReadings.h"
 
-std::string getCurrentIncidentsFromReadings(std::vector<int> chargingCurrentSamples) {
-    std::string output = "4-5, 2";
+std::map<std::string, int> getCurrentIncidentsFromReadings(std::vector<int> chargingCurrentSamples) {
+    std::map<std::string, int> output = {{"4-5", 2}};
     return output;
 }

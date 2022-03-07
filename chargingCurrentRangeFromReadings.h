@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <string>
+#include <map>
 #include <vector>
 
-std::string getCurrentIncidentsFromReadings(std::vector<int> chargingCurrentSamples);
+std::map<std::string, int> getCurrentIncidentsFromReadings(std::vector<int> chargingCurrentSamples);
