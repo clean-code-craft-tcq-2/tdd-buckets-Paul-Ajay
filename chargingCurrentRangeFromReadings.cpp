@@ -25,5 +25,8 @@ std::map<std::string, int> getCurrentIncidentsFromReadings(std::vector<int> char
             continuousRangeReadings.clear();
         }
     }
+    continuousRangeReadings.push_back(chargingCurrentSamples.back());
+    rangeString = formatRangeString(continuousRangeReadings.front(), continuousRangeReadings.back());
+    output[rangeString] = continuousRangeReadings.size();
     return output;
 }
