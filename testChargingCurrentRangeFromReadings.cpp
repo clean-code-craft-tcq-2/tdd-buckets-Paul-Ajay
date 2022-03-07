@@ -2,6 +2,11 @@
 #include "test/catch.hpp"
 #include "chargingCurrentRangeFromReadings.h"
 
+TEST_CASE("test case for checking isContinuousNumbers function") {
+    REQUIRE(isContinuousNumbers(1,2) == true);
+    REQUIRE(isContinuousNumbers(2,4) == false);
+}
+
 TEST_CASE("test case for charging sample with single input") {
     std::vector<int> chargingCurrentSamples = {4};
     std::map<std::string, int> expectedOutput = {{"4-4", 1}};
