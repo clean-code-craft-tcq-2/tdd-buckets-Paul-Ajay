@@ -7,6 +7,10 @@ TEST_CASE("test case for checking isContinuousNumbers function") {
     REQUIRE(isContinuousNumbers(2,4) == false);
 }
 
+TEST_CASE("test case for checking formatRangeString function") {
+    REQUIRE(formatRangeString(1,2) == "1-2");
+}
+
 TEST_CASE("test case for charging sample with single input") {
     std::vector<int> chargingCurrentSamples = {4};
     std::map<std::string, int> expectedOutput = {{"4-4", 1}};

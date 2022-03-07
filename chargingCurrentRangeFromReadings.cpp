@@ -10,17 +10,20 @@ std::string formatRangeString(int firstNumber, int secondNumber) {
 
 std::map<std::string, int> getCurrentIncidentsFromReadings(std::vector<int> chargingCurrentSamples) {
     std::map<std::string, int> output;
-    std::string range;
-    int firstNumber = 0;
+    std::string rangeString;
+    std::vector<int> continuousRangeReadings;
     if(chargingCurrentSamples.size() == 1) {
-        range = formatRangeString(chargingCurrentSamples.at(0), chargingCurrentSamples.at(0));
-        output[range] = 1;
+        rangeString = formatRangeString(chargingCurrentSamples.at(0), chargingCurrentSamples.at(0));
+        output[rangeString] = 1;
         return output;
     }
-    for(auto number : chargingCurrentSamples) {
-        firstNumber = number;
-        if()
+    for(auto itr = chargingCurrentSamples.begin(); itr != chargingCurrentSamples.end() - 1; itr++) {
+        continuousRangeReadings.push_back(*itr);
+        if(!isContinuousNumbers(*itr, *(itr + 1))) {
+            rangeString = formatRangeString(continuousRangeReadings.front(), continuousRangeReadings.back());
+            output[rangeString] = continuousRangeReadings.size();
+            continuousRangeReadings.clear();
+        }
     }
-
     return output;
 }
