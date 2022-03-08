@@ -12,11 +12,6 @@ std::map<std::string, int> getCurrentIncidentsFromReadings(std::vector<int> char
     std::map<std::string, int> output;
     std::string rangeString;
     std::vector<int> continuousRangeReadings;
-    if(chargingCurrentSamples.size() == 1) {
-        rangeString = formatRangeString(chargingCurrentSamples.at(0), chargingCurrentSamples.at(0));
-        output[rangeString] = 1;
-        return output;
-    }
     for(auto itr = chargingCurrentSamples.begin(); itr != chargingCurrentSamples.end() - 1; itr++) {
         continuousRangeReadings.push_back(*itr);
         if(!isContinuousNumbers(*itr, *(itr + 1))) {
