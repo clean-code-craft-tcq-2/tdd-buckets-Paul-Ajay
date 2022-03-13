@@ -11,6 +11,10 @@ TEST_CASE("test case for checking formatRangeString function") {
     REQUIRE(formatRangeString(1,2) == "1-2");
 }
 
+TEST_CASE("test case for checking toCsvFormat function") {
+    REQUIRE(toCsvFormat({"1-2, 1"}) == "Range, Readings\n1-2 ,1");
+}
+
 TEST_CASE("test case for charging sample with single input") {
     std::vector<int> chargingCurrentSamples = {4};
     std::map<std::string, int> expectedOutput = {{"4-4", 1}};
