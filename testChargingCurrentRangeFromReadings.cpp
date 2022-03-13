@@ -13,7 +13,7 @@ TEST_CASE("test case for checking formatRangeString function") {
 
 TEST_CASE("test case for checking toCsvFormat function") {
     std::map<std::string, int> inputMap = {{"1-2", 1}}; 
-    REQUIRE(toCsvFormat(inputMap) == "Range, Readings\n1-2 ,1");
+    REQUIRE(toCsvFormat(inputMap) == "Range, Readings\n1-2, 1");
 }
 
 TEST_CASE("test case for charging sample with single input") {
