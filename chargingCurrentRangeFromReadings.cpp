@@ -1,5 +1,13 @@
 #include "chargingCurrentRangeFromReadings.h"
 
+bool isValidChargingCurrentSamples(std::vector<int> chargingCurrentSamples){
+    for(auto itr : chargingCurrentSamples) {
+        if(itr < 0)
+            return false;
+    }
+    return true;
+}
+
 bool isContinuousNumbers(int firstNumber, int secondNumber) {
     return(!(abs(firstNumber - secondNumber) > 1));
 }
