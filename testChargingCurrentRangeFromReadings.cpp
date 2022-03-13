@@ -7,6 +7,12 @@ TEST_CASE("test case for checking isContinuousNumbers function") {
     REQUIRE(isContinuousNumbers(2,4) == false);
 }
 
+TEST_CASE("test case for doSortVector function") {
+    std::vector<int> chargingCurrentSamples = {10,4,5,9,12,10,11,3};
+    std::vector<int> expectedOutput = {3,4,5,9,10,10,11,12};
+    REQUIRE(doSortVector(chargingCurrentSamples) == expectedOutput);
+}
+
 TEST_CASE("test case for checking formatRangeString function") {
     REQUIRE(formatRangeString(1,2) == "1-2");
 }
