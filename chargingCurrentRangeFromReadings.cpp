@@ -1,11 +1,17 @@
 #include "chargingCurrentRangeFromReadings.h"
 
-bool isValidChargingCurrentSamples(std::vector<int> chargingCurrentSamples){
+bool isValidChargingCurrentSamples(std::vector<int> chargingCurrentSamples) {
     for(auto itr : chargingCurrentSamples) {
         if(itr < 0)
             return false;
     }
     return true;
+}
+
+std::vector<int> doSortVector(std::vector<int> chargingCurrentSamples) {
+    std::vector<int> sortedVector = chargingCurrentSamples;
+    std::sort(sortedVector.begin(), sortedVector.end());
+    return sortedVector;
 }
 
 bool isContinuousNumbers(int firstNumber, int secondNumber) {
