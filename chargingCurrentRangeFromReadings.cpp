@@ -8,7 +8,15 @@ std::string formatRangeString(int firstNumber, int secondNumber) {
     return (std::to_string(firstNumber) + "-" + std::to_string(secondNumber));
 }
 
-std::map<std::string, int> getCurrentIncidentsFromReadings(std::vector<int> chargingCurrentSamples) {
+std::string toCsvFormat(std::map<std::string, int> continuousRangeReadingsMap) {
+    std::string outputString = "Range, Readings";
+    for (auto itr : continuousRangeReadingsMap) {
+        outputString += "\n" + itr.first + ", " + std::to_string(itr.second);
+    }
+    return outputString;
+}
+
+std::string getCurrentIncidentsFromReadings(std::vector<int> chargingCurrentSamples) {
     std::map<std::string, int> output;
     std::string rangeString;
     std::vector<int> continuousRangeReadings;
@@ -23,5 +31,5 @@ std::map<std::string, int> getCurrentIncidentsFromReadings(std::vector<int> char
     continuousRangeReadings.push_back(chargingCurrentSamples.back());
     rangeString = formatRangeString(continuousRangeReadings.front(), continuousRangeReadings.back());
     output[rangeString] = continuousRangeReadings.size();
-    return output;
+    return toCsvFormat(output);
 }

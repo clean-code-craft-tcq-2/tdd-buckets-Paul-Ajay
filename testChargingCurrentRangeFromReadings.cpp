@@ -12,29 +12,30 @@ TEST_CASE("test case for checking formatRangeString function") {
 }
 
 TEST_CASE("test case for checking toCsvFormat function") {
-    REQUIRE(toCsvFormat({"1-2, 1"}) == "Range, Readings\n1-2 ,1");
+    std::map<std::string, int> inputMap = {{"1-2", 1}}; 
+    REQUIRE(toCsvFormat(inputMap) == "Range, Readings\n1-2 ,1");
 }
 
 TEST_CASE("test case for charging sample with single input") {
     std::vector<int> chargingCurrentSamples = {4};
-    std::map<std::string, int> expectedOutput = {{"4-4", 1}};
+    std::string expectedOutput = "Range, Readings\n4-4, 1";
     REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples) == expectedOutput);
 }
 
 TEST_CASE("test case for charging sample with 2 input") {
     std::vector<int> chargingCurrentSamples = {4,5};
-    std::map<std::string, int> expectedOutput = {{"4-5", 2}};
+    std::string expectedOutput = "Range, Readings\n4-5, 2";
     REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples) == expectedOutput);    
 }
 
 TEST_CASE("test case for charging sample with more samples") {
     std::vector<int> chargingCurrentSamples = {4,5,5,9,9,10,11};
-    std::map<std::string, int> expectedOutput = {{"4-5", 3}, {"9-11", 4}};
+    std::string expectedOutput = "Range, Readings\n4-5, 3\n9-11, 4";
     REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples) == expectedOutput);      
 }
 
 TEST_CASE("test case for charging sample with no continuous readings") {
     std::vector<int> chargingCurrentSamples = {4,7,10};
-    std::map<std::string, int> expectedOutput = {{"4-4", 1}, {"7-7", 1}, {"10-10", 1}};
+    std::string expectedOutput = "Range, Readings\n4-4, 1\n7-7, 1\n10-10, 1";
     REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples) == expectedOutput); 
 }
