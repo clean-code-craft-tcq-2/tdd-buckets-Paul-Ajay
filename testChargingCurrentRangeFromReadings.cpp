@@ -52,13 +52,12 @@ TEST_CASE("test case for getCurrentIncidentsFromReadings function") {
     // charging sample with 1 continuous reading
     std::vector<int> chargingCurrentSamples = {4,5};
     std::string expectedOutput = "Range, Readings\n4-5, 2";
-    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples) == expectedOutput);
+    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, *consolePrint) == expectedOutput);
     // charging sample with -ve element
     chargingCurrentSamples = {-4,5};
-    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples) == "");
+    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, *consolePrint) == "");
     // charging sample with unsorted vector
     chargingCurrentSamples = {10,4,5,9,12,10,11,3};
     expectedOutput = "Range, Readings\n3-5, 3\n9-12, 5";
-    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples) == expectedOutput);
-
+    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, *consolePrint) == expectedOutput);
 }

@@ -48,10 +48,16 @@ std::map<std::string, int> getCurrentRangesAndReadingsMap(std::vector<int> charg
     return currentReadingsMap;
 }
 
-std::string getCurrentIncidentsFromReadings(std::vector<int> chargingCurrentSamples) {
+std::string getCurrentIncidentsFromReadings(std::vector<int> chargingCurrentSamples, functionPtr fPtr) {
     if (!isValidChargingCurrentSamples(chargingCurrentSamples))
         return "";
     auto sortedChargingCurrentSamples = doSortVector(chargingCurrentSamples);
     auto currentReadingsMap = getCurrentRangesAndReadingsMap(sortedChargingCurrentSamples);
-    return toCsvFormat(currentReadingsMap);
+    auto csvConvertedString = toCsvFormat(currentReadingsMap);
+    (*fPtr)(csvConvertedString);
+    return csvConvertedString;
+}
+
+void consolePrint(std::string outputString) {
+    std::cout<<outputString;
 }
