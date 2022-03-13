@@ -30,20 +30,28 @@ std::string toCsvFormat(std::map<std::string, int> continuousRangeReadingsMap) {
     return outputString;
 }
 
-std::string getCurrentIncidentsFromReadings(std::vector<int> chargingCurrentSamples) {
-    std::map<std::string, int> output;
+std::map<std::string, int> getCurrentRangesAndReadingsMap(std::vector<int> chargingCurrentSamples) {
+    std::map<std::string, int> currentReadingsMap;
     std::string rangeString;
     std::vector<int> continuousRangeReadings;
     for(auto itr = chargingCurrentSamples.begin(); itr != chargingCurrentSamples.end() - 1; itr++) {
         continuousRangeReadings.push_back(*itr);
         if(!isContinuousNumbers(*itr, *(itr + 1))) {
             rangeString = formatRangeString(continuousRangeReadings.front(), continuousRangeReadings.back());
-            output[rangeString] = continuousRangeReadings.size();
+            currentReadingsMap[rangeString] = continuousRangeReadings.size();
             continuousRangeReadings.clear();
         }
     }
     continuousRangeReadings.push_back(chargingCurrentSamples.back());
     rangeString = formatRangeString(continuousRangeReadings.front(), continuousRangeReadings.back());
-    output[rangeString] = continuousRangeReadings.size();
-    return toCsvFormat(output);
+    currentReadingsMap[rangeString] = continuousRangeReadings.size();
+    return currentReadingsMap;
+}
+
+std::string getCurrentIncidentsFromReadings(std::vector<int> chargingCurrentSamples) {
+    if (!isValidChargingCurrentSamples(chargingCurrentSamples))
+        return "";
+    auto sortedChargingCurrentSamples = doSortVector(chargingCurrentSamples);
+    auto currentReadingsMap = getCurrentRangesAndReadingsMap(sortedChargingCurrentSamples);
+    return toCsvFormat(currentReadingsMap);
 }

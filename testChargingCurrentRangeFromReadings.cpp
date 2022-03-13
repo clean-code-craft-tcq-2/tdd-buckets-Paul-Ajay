@@ -29,26 +29,36 @@ TEST_CASE("test case for checking isValidChargingCurrentSamples") {
     REQUIRE(isValidChargingCurrentSamples(chargingCurrentSamples) == false);
 }
 
-TEST_CASE("test case for charging sample with single input") {
+TEST_CASE("test case for getCurrentRangesAndReadingsMap") {
+    // charging sample with single element
     std::vector<int> chargingCurrentSamples = {4};
-    std::string expectedOutput = "Range, Readings\n4-4, 1";
-    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples) == expectedOutput);
+    std::map<std::string, int> expectedOutput = {{"4-4", 1}};
+    REQUIRE(getCurrentRangesAndReadingsMap(chargingCurrentSamples) == expectedOutput);
+    // charging sample with 2 elements
+    chargingCurrentSamples = {4,5};
+    expectedOutput = {{"4-5", 2}};
+    REQUIRE(getCurrentRangesAndReadingsMap(chargingCurrentSamples) == expectedOutput);
+    // charging sample with more samples
+    chargingCurrentSamples = {4,5,5,9,9,10,11};
+    expectedOutput = {{"4-5", 3}, {"9-11", 4}};
+    REQUIRE(getCurrentRangesAndReadingsMap(chargingCurrentSamples) == expectedOutput);
+    // charging sample with no continuous readings
+    chargingCurrentSamples = {4,7,10};
+    expectedOutput = {{"4-4", 1}, {"7-7", 1}, {"10-10", 1}};
+    REQUIRE(getCurrentRangesAndReadingsMap(chargingCurrentSamples) == expectedOutput);
 }
 
-TEST_CASE("test case for charging sample with 2 input") {
+TEST_CASE("test case for getCurrentIncidentsFromReadings function") {
+    // charging sample with 1 continuous reading
     std::vector<int> chargingCurrentSamples = {4,5};
     std::string expectedOutput = "Range, Readings\n4-5, 2";
-    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples) == expectedOutput);    
-}
+    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples) == expectedOutput);
+    // charging sample with -ve element
+    chargingCurrentSamples = {-4,5};
+    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples) == "");
+    // charging sample with unsorted vector
+    chargingCurrentSamples = {10,4,5,9,12,10,11,3};
+    expectedOutput = "Range, Readings\n3-5, 3\n9-12, 5";
+    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples) == expectedOutput);
 
-TEST_CASE("test case for charging sample with more samples") {
-    std::vector<int> chargingCurrentSamples = {4,5,5,9,9,10,11};
-    std::string expectedOutput = "Range, Readings\n4-5, 3\n9-11, 4";
-    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples) == expectedOutput);      
-}
-
-TEST_CASE("test case for charging sample with no continuous readings") {
-    std::vector<int> chargingCurrentSamples = {4,7,9};
-    std::string expectedOutput = "Range, Readings\n4-4, 1\n7-7, 1\n9-9, 1";
-    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples) == expectedOutput); 
 }
