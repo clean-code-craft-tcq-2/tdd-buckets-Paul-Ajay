@@ -16,6 +16,13 @@ TEST_CASE("test case for checking toCsvFormat function") {
     REQUIRE(toCsvFormat(inputMap) == "Range, Readings\n1-2, 1");
 }
 
+TEST_CASE("test case for checking isValidChargingCurrentSamples") {
+    std::vector<int> chargingCurrentSamples = {4,5};
+    REQUIRE(isValidChargingCurrentSamples(chargingCurrentSamples) == true);
+    chargingCurrentSamples = {-4,5};
+    REQUIRE(isValidChargingCurrentSamples(chargingCurrentSamples) == false);
+}
+
 TEST_CASE("test case for charging sample with single input") {
     std::vector<int> chargingCurrentSamples = {4};
     std::string expectedOutput = "Range, Readings\n4-4, 1";
