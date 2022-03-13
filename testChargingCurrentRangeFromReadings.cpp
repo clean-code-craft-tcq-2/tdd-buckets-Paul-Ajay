@@ -35,7 +35,7 @@ TEST_CASE("test case for charging sample with more samples") {
 }
 
 TEST_CASE("test case for charging sample with no continuous readings") {
-    std::vector<int> chargingCurrentSamples = {4,7,10};
-    std::string expectedOutput = "Range, Readings\n4-4, 1\n7-7, 1\n10-10, 1";
+    std::vector<int> chargingCurrentSamples = {4,7,9};
+    std::string expectedOutput = "Range, Readings\n4-4, 1\n7-7, 1\n9-9, 1";
     REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples) == expectedOutput); 
 }
