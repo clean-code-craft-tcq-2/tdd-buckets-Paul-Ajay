@@ -15,7 +15,7 @@ std::vector<int> doSortVector(std::vector<int> chargingCurrentSamples) {
 }
 
 bool isContinuousNumbers(int firstNumber, int secondNumber) {
-    return(!(abs(firstNumber - secondNumber) > 1));
+    return(abs(firstNumber - secondNumber) <= 1);
 }
 
 std::string formatRangeString(int firstNumber, int secondNumber) {

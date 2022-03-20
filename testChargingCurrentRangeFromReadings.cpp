@@ -11,6 +11,11 @@ TEST_CASE("test case for doSortVector function") {
     std::vector<int> chargingCurrentSamples = {10,4,5,9,12,10,11,3};
     std::vector<int> expectedOutput = {3,4,5,9,10,10,11,12};
     REQUIRE(doSortVector(chargingCurrentSamples) == expectedOutput);
+    // test to ensure original array is not modified
+    chargingCurrentSamples = {5,1,7};
+    auto copyOfOriginalData = chargingCurrentSamples;
+    doSortVector(chargingCurrentSamples);
+    REQUIRE(copyOfOriginalData == chargingCurrentSamples);
 }
 
 TEST_CASE("test case for checking formatRangeString function") {
