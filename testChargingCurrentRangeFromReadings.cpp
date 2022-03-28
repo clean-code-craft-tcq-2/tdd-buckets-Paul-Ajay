@@ -53,20 +53,6 @@ TEST_CASE("test case for getCurrentRangesAndReadingsMap") {
     REQUIRE(getCurrentRangesAndReadingsMap(chargingCurrentSamples) == expectedOutput);
 }
 
-TEST_CASE("test case for getCurrentIncidentsFromReadings function") {
-    // charging sample with 1 continuous reading
-    std::vector<int> chargingCurrentSamples = {4,5};
-    std::string expectedOutput = "Range, Readings\n4-5, 2";
-    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, *consolePrint) == expectedOutput);
-    // charging sample with -ve element
-    chargingCurrentSamples = {-4,5};
-    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, *consolePrint) == "");
-    // charging sample with unsorted vector
-    chargingCurrentSamples = {10,4,5,9,12,10,11,3};
-    expectedOutput = "Range, Readings\n3-5, 3\n9-12, 5";
-    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, *consolePrint) == expectedOutput);
-}
-
 TEST_CASE("test case for getNumberFromVector function"){
     std::vector<int> inputVector = {1,1,4,6};
     int expectedOutput = 1146;
@@ -104,4 +90,48 @@ TEST_CASE("test case for getCurrentFromADCReading function") {
     adcValues = {1,0,2};
     expectedOutput = -12;
     REQUIRE(getCurrentFromADCReading(adcValues, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);
+}
+
+TEST_CASE("test case for convertADCCurrentReadingsToInteger function") {
+    std::vector<std::vector<int>> chargingCurrentSamples = {{1,6,3,7},{2,0,4,7}};
+    int adcMaximumValue = 4094;
+    int maximumCurrentValue = 10;
+    int minimumCurrentValue = 0;
+    std::vector<int> expectedOutput = {4,5};
+    REQUIRE(convertADCCurrentReadingsToInteger(chargingCurrentSamples, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);
+    chargingCurrentSamples = {{-1,0},{2,0,4,7}};
+    expectedOutput = {-1,5};
+    REQUIRE(convertADCCurrentReadingsToInteger(chargingCurrentSamples, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);
+}
+
+TEST_CASE("test case for getADCMaximumValueFromRange function") {
+    int adcRange = 12;
+    int expectedOutput = 4094;
+    REQUIRE(getADCMaximumValueFromRange(adcRange) == expectedOutput);
+}
+
+TEST_CASE("test case for getCurrentIncidentsFromReadings function") {
+    // charging sample with 1 continuous reading
+    std::vector<std::vector<int>> chargingCurrentSamples = {{1,6,3,7},{2,0,4,7}};
+    int adcRange = 12;
+    int maximumCurrentValue = 10;
+    int minimumCurrentValue = 0;
+
+    std::string expectedOutput = "Range, Readings\n4-5, 2";
+    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, adcRange, maximumCurrentValue, minimumCurrentValue, *consolePrint) == expectedOutput);
+    // charging sample with -ve element
+    chargingCurrentSamples = {{-1,0},{2,0,4,7}};
+    expectedOutput = "";
+    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, adcRange, maximumCurrentValue, minimumCurrentValue, *consolePrint) == expectedOutput);
+
+    adcRange = 10;
+    maximumCurrentValue = 15;
+    minimumCurrentValue = -15;
+    chargingCurrentSamples = {{8,5,2},{6,4,7}, {6,8,1},{8,1,8},{1,0,2},{1,7,0},{4,0,8},{0},{1,0,2,2},{8,8,6}}; // {10,4,5,9,-12,-10,-3,-15,15,11}
+    expectedOutput = "Range, Readings\n15-15, 2\n3-5, 3\n9-12, 5";
+    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, adcRange, maximumCurrentValue, minimumCurrentValue, *consolePrint) == expectedOutput);
+    // // charging sample with unsorted vector
+    // chargingCurrentSamples = {10,4,5,9,12,10,11,3};
+    // expectedOutput = "Range, Readings\n3-5, 3\n9-12, 5";
+    // REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, *consolePrint) == expectedOutput);
 }

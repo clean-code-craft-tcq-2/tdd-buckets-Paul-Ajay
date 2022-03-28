@@ -48,16 +48,6 @@ std::map<std::string, int> getCurrentRangesAndReadingsMap(std::vector<int> charg
     return currentReadingsMap;
 }
 
-std::string getCurrentIncidentsFromReadings(std::vector<int> chargingCurrentSamples, functionPtr fPtr) {
-    if (!isValidChargingCurrentSamples(chargingCurrentSamples))
-        return "";
-    auto sortedChargingCurrentSamples = doSortVector(chargingCurrentSamples);
-    auto currentReadingsMap = getCurrentRangesAndReadingsMap(sortedChargingCurrentSamples);
-    auto csvConvertedString = toCsvFormat(currentReadingsMap);
-    (*fPtr)(csvConvertedString);
-    return csvConvertedString;
-}
-
 void consolePrint(std::string outputString) {
     std::cout<<outputString;
 }
@@ -77,4 +67,33 @@ int getCurrentFromADCReading(std::vector<int> adcValue, int adcMaximumValue, int
         double currentValueInAmp = minimumCurrentValue + static_cast<double>((maximumCurrentValue - minimumCurrentValue) * adcValueAsSingleNumber) / adcMaximumValue;
         return round(currentValueInAmp);
     }
+}
+
+std::vector<int> convertADCCurrentReadingsToInteger(std::vector<std::vector<int>> currentReadingsAsADC, int adcMaximumValue, int maximumCurrentValue, int minimumCurrentValue) {
+    std::vector<int> currentReadingsAsInteger;
+    for (auto itr : currentReadingsAsADC) {
+        auto currentReadingAsInteger = getCurrentFromADCReading(itr, adcMaximumValue, maximumCurrentValue, minimumCurrentValue);
+        if (currentReadingAsInteger < minimumCurrentValue) {
+            currentReadingsAsInteger.push_back(-1);
+        } else {
+            currentReadingsAsInteger.push_back(abs(currentReadingAsInteger));
+        }
+    }
+    return currentReadingsAsInteger;
+}
+
+int getADCMaximumValueFromRange(int adcRange) {
+    return (pow(2, adcRange) - 2);
+}
+
+std::string getCurrentIncidentsFromReadings(std::vector<std::vector<int>> currentReadingsAsADC, int adcRange, int maximumCurrentValue, int minimumCurrentValue, functionPtr fPtr) {
+    auto adcMaximumValue = getADCMaximumValueFromRange(adcRange);
+    auto chargingCurrentSamples = convertADCCurrentReadingsToInteger(currentReadingsAsADC, adcMaximumValue, maximumCurrentValue, minimumCurrentValue);
+    if (!isValidChargingCurrentSamples(chargingCurrentSamples))
+        return "";
+    auto sortedChargingCurrentSamples = doSortVector(chargingCurrentSamples);
+    auto currentReadingsMap = getCurrentRangesAndReadingsMap(sortedChargingCurrentSamples);
+    auto csvConvertedString = toCsvFormat(currentReadingsMap);
+    (*fPtr)(csvConvertedString);
+    return csvConvertedString;
 }
