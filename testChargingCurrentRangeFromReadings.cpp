@@ -111,27 +111,44 @@ TEST_CASE("test case for getADCMaximumValueFromRange function") {
 }
 
 TEST_CASE("test case for getCurrentIncidentsFromReadings function") {
-    // charging sample with 1 continuous reading
-    std::vector<std::vector<int>> chargingCurrentSamples = {{1,6,3,7},{2,0,4,7}};
-    int adcRange = 12;
-    int maximumCurrentValue = 10;
-    int minimumCurrentValue = 0;
+    GIVEN("charging sample with 1 continuous reading") {
+        std::vector<std::vector<int>> chargingCurrentSamples = {{1,6,3,7},{2,0,4,7}};
+        int adcRange = 12;
+        int maximumCurrentValue = 10;
+        int minimumCurrentValue = 0;
+        WHEN("getCurrentIncidentsFromReadings() is called with input array") {
+            std::string expectedOutput = "Range, Readings\n4-5, 2";
+            std::string outputFromFunction = getCurrentIncidentsFromReadings(chargingCurrentSamples, adcRange, maximumCurrentValue, minimumCurrentValue, *consolePrint);
+            THEN("output in CSV format is generated") {
+                REQUIRE(outputFromFunction == expectedOutput);
+            }
+        }
+    }
+    GIVEN("charging sample with -ve element") {
+        std::vector<std::vector<int>> chargingCurrentSamples = {{-1,0},{2,0,4,7}};
+        int adcRange = 12;
+        int maximumCurrentValue = 10;
+        int minimumCurrentValue = 0;
+        WHEN("getCurrentIncidentsFromReadings() is called with input array") {
+            std::string expectedOutput = "";
+            std::string outputFromFunction = getCurrentIncidentsFromReadings(chargingCurrentSamples, adcRange, maximumCurrentValue, minimumCurrentValue, *consolePrint);
+            THEN("empty string corresponding to error case occurred") {
+                REQUIRE(outputFromFunction == expectedOutput);
+            }
+        }
+    }
 
-    std::string expectedOutput = "Range, Readings\n4-5, 2";
-    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, adcRange, maximumCurrentValue, minimumCurrentValue, *consolePrint) == expectedOutput);
-    // charging sample with -ve element
-    chargingCurrentSamples = {{-1,0},{2,0,4,7}};
-    expectedOutput = "";
-    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, adcRange, maximumCurrentValue, minimumCurrentValue, *consolePrint) == expectedOutput);
-
-    adcRange = 10;
-    maximumCurrentValue = 15;
-    minimumCurrentValue = -15;
-    chargingCurrentSamples = {{8,5,2},{6,4,7}, {6,8,1},{8,1,8},{1,0,2},{1,7,0},{4,0,8},{0},{1,0,2,2},{8,8,6}}; // {10,4,5,9,-12,-10,-3,-15,15,11}
-    expectedOutput = "Range, Readings\n15-15, 2\n3-5, 3\n9-12, 5";
-    REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, adcRange, maximumCurrentValue, minimumCurrentValue, *consolePrint) == expectedOutput);
-    // // charging sample with unsorted vector
-    // chargingCurrentSamples = {10,4,5,9,12,10,11,3};
-    // expectedOutput = "Range, Readings\n3-5, 3\n9-12, 5";
-    // REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, *consolePrint) == expectedOutput);
+    GIVEN("charging sample with unsorted array and adc range from -ve to +ve value") {
+        int adcRange = 10;
+        int maximumCurrentValue = 15;
+        int minimumCurrentValue = -15;
+        std::vector<std::vector<int>> chargingCurrentSamples = {{8,5,2},{6,4,7}, {6,8,1},{8,1,8},{1,0,2},{1,7,0},{4,0,8},{0},{1,0,2,2},{8,8,6}}; // {10,4,5,9,-12,-10,-3,-15,15,11}        
+        WHEN("getCurrentIncidentsFromReadings() is called with input array") {
+            std::string expectedOutput = "Range, Readings\n15-15, 2\n3-5, 3\n9-12, 5";
+            std::string outputFromFunction = getCurrentIncidentsFromReadings(chargingCurrentSamples, adcRange, maximumCurrentValue, minimumCurrentValue, *consolePrint);
+            THEN("output in CSV format is generated") {
+                REQUIRE(outputFromFunction == expectedOutput);
+            }
+        }
+    }
 }
