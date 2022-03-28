@@ -66,3 +66,18 @@ TEST_CASE("test case for getCurrentIncidentsFromReadings function") {
     expectedOutput = "Range, Readings\n3-5, 3\n9-12, 5";
     REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, *consolePrint) == expectedOutput);
 }
+
+TEST_CASE("test case for getCurrentFromADCReading function") {
+    // current adc value with value in range
+    std::vector<int> adcValues = {1,1,4,6};
+    int adcMinumumValue = 0;
+    int adcMaximumValue = 4094;
+    int expectedOutput = 3;
+    int maximumCurrentValue = 10;
+    int minimumCurrentValue = 0;
+    REQUIRE(getCurrentFromADCReading(adcValues, adcMinumumValue, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);
+    // current adc value with out of limit returns error (minimum value -1)
+    adcValues = {4,0,9,5};
+    expectedOutput = minimumCurrentValue -1;
+    REQUIRE(getCurrentFromADCReading(adcValues, adcMinumumValue, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);
+}
