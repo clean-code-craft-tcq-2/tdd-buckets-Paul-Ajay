@@ -63,9 +63,18 @@ void consolePrint(std::string outputString) {
 }
 
 int getNumberFromVector(std::vector<int>inputVector) {
-    return 1146;
+    int output = 0;
+    for (auto i : inputVector)
+        output = output * 10 + i;
+    return output;
 }
 
-int getCurrentFromADCReading(std::vector<int> adcValue, int adcMinumumValue, int adcMaximumValue, int maximumCurrentValue, int minimumCurrentValue) {
-    return 3;
+int getCurrentFromADCReading(std::vector<int> adcValue, int adcMaximumValue, int maximumCurrentValue, int minimumCurrentValue) {
+    auto adcValueAsSingleNumber = getNumberFromVector(adcValue);
+    if((adcValueAsSingleNumber > adcMaximumValue) || (adcValueAsSingleNumber < 0)) {
+        return minimumCurrentValue - 1; // Error
+    } else {
+        double currentValueInAmp = static_cast<double>((maximumCurrentValue - minimumCurrentValue) * adcValueAsSingleNumber) / adcMaximumValue;
+        return round(currentValueInAmp);
+    }
 }

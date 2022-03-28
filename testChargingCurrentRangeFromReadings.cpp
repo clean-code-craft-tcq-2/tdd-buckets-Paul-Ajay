@@ -71,19 +71,24 @@ TEST_CASE("test case for getNumberFromVector function"){
     std::vector<int> inputVector = {1,1,4,6};
     int expectedOutput = 1146;
     REQUIRE(getNumberFromVector(inputVector) == expectedOutput);
+    inputVector = {-1, 0};
+    expectedOutput = -10;
+    REQUIRE(getNumberFromVector(inputVector) == expectedOutput);  
 }
 
 TEST_CASE("test case for getCurrentFromADCReading function") {
     // current adc value with value in range
     std::vector<int> adcValues = {1,1,4,6};
-    int adcMinumumValue = 0;
     int adcMaximumValue = 4094;
     int expectedOutput = 3;
     int maximumCurrentValue = 10;
     int minimumCurrentValue = 0;
-    REQUIRE(getCurrentFromADCReading(adcValues, adcMinumumValue, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);
+    REQUIRE(getCurrentFromADCReading(adcValues, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);
     // current adc value with out of limit returns error (minimum value -1)
     adcValues = {4,0,9,5};
     expectedOutput = minimumCurrentValue -1;
-    REQUIRE(getCurrentFromADCReading(adcValues, adcMinumumValue, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);
+    REQUIRE(getCurrentFromADCReading(adcValues, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);
+    adcValues = {-1};
+    expectedOutput = minimumCurrentValue -1;
+    REQUIRE(getCurrentFromADCReading(adcValues, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);    
 }
