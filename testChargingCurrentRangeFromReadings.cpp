@@ -67,6 +67,12 @@ TEST_CASE("test case for getCurrentIncidentsFromReadings function") {
     REQUIRE(getCurrentIncidentsFromReadings(chargingCurrentSamples, *consolePrint) == expectedOutput);
 }
 
+TEST_CASE("test case for getNumberFromVector function"){
+    std::vector<int> inputVector = {1,1,4,6};
+    int expectedOutput = 1146;
+    REQUIRE(getNumberFromVector(inputVector) == expectedOutput);
+}
+
 TEST_CASE("test case for getCurrentFromADCReading function") {
     // current adc value with value in range
     std::vector<int> adcValues = {1,1,4,6};

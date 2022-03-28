@@ -61,3 +61,11 @@ std::string getCurrentIncidentsFromReadings(std::vector<int> chargingCurrentSamp
 void consolePrint(std::string outputString) {
     std::cout<<outputString;
 }
+
+int getNumberFromVector(std::vector<int>inputVector) {
+    return 1146;
+}
+
+int getCurrentFromADCReading(std::vector<int> adcValue, int adcMinumumValue, int adcMaximumValue, int maximumCurrentValue, int minimumCurrentValue) {
+    return 3;
+}
