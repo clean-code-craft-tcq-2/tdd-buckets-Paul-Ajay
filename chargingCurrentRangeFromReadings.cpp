@@ -74,7 +74,7 @@ int getCurrentFromADCReading(std::vector<int> adcValue, int adcMaximumValue, int
     if((adcValueAsSingleNumber > adcMaximumValue) || (adcValueAsSingleNumber < 0)) {
         return minimumCurrentValue - 1; // Error
     } else {
-        double currentValueInAmp = static_cast<double>((maximumCurrentValue - minimumCurrentValue) * adcValueAsSingleNumber) / adcMaximumValue;
+        double currentValueInAmp = minimumCurrentValue + static_cast<double>((maximumCurrentValue - minimumCurrentValue) * adcValueAsSingleNumber) / adcMaximumValue;
         return round(currentValueInAmp);
     }
 }

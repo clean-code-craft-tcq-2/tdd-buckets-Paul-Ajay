@@ -90,5 +90,18 @@ TEST_CASE("test case for getCurrentFromADCReading function") {
     REQUIRE(getCurrentFromADCReading(adcValues, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);
     adcValues = {-1};
     expectedOutput = minimumCurrentValue -1;
-    REQUIRE(getCurrentFromADCReading(adcValues, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);    
+    REQUIRE(getCurrentFromADCReading(adcValues, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);
+
+    adcMaximumValue = 1022;
+    maximumCurrentValue = 15;
+    minimumCurrentValue = -15;
+    adcValues = {5,1,1};
+    expectedOutput = 0;
+    REQUIRE(getCurrentFromADCReading(adcValues, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);
+    adcValues = {9,2,0};
+    expectedOutput = 12;
+    REQUIRE(getCurrentFromADCReading(adcValues, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);
+    adcValues = {1,0,2};
+    expectedOutput = -12;
+    REQUIRE(getCurrentFromADCReading(adcValues, adcMaximumValue, maximumCurrentValue, minimumCurrentValue) == expectedOutput);
 }
